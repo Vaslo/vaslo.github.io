@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>D3: Global Net Imports/Exports of the largest 3 traders</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+ 
+    <style type="text/css">
+        .label {
+            font-weight: bold;
+            text-anchor: middle;
+            cursor: default;
+        }
+
+        .legendlabel {
+            font-weight: bold;
+            text-anchor: middle;
+            cursor: default;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+
+        #container {
+            width: 1000px;
+            margin: 25px auto 25px auto;
+            padding: 50px 50px 50px 50px;
+            background-color: lightgray;
+            box-shadow: 0 0 20px #ccc;
+        }
+
+        #footer p {
+		    margin-top: 50px;
+			margin-bottom: 0;
+			font-size: 11px;
+			line-height: 14px;
+			color: black;
+			}
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>In 2016, only three countries made up nearly 25% of the global volume of imports and exports</h1>
+
+
+        <div id="chart">
+            <h2>Total Volume of Exports (Import + Export) for 2016</h2>
+        </div>
+        <div style="display:inline-block;" id="legend"></div>
+
+        <p>Despite many global trading partners, it's clear that the US, China, and (suprisingly) Germany drive a quarter of the volume of global trade.</p>
+        <div id="footer">
+            <p>Data available at:<a href="https://comtrade.un.org/data/">the UN Comtrade Website.</a>  Missing or negligible data is colored gray.
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+     
+
+        //Width and height
+        var w = 1000;
+        var h = 500;
+
+        //Color scheme for the choropleth
+        var color = d3.scaleQuantize()
+            .range(["rgb(237,248,233)", "rgb(186,228,179)",
+                "rgb(116,196,118)", "rgb(49,163,84)", "rgb(0,109,44)"]);
+
+        //Map projection and path generation
+        var projection = d3.geoMercator()
+            .translate([w / 2, h / 2]);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        //Create SVG (should be linked up to #chart above for proper placement)
+        var svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .append("g");
+
+        //Saved for later as a note to allow labels to appear
+        //var formatAsPercent = d3.format(",.1%");
+
+        //Labels array for reading into the "Text" labels below
+        var labels = [
+            {
+                x: 100,
+                y: 150,
+                text: 'US: 10.7%'
+            },
+            {
+                x: 450,
+                y: 50,
+                text: 'Germany: 8.4%'
+            },
+            {
+                x: 900,
+                y: 200,
+                text: 'China: 13.4%'
+
+            },
+            {
+                x: 133,
+                y: 309,
+                text: 'Indicates higher trade volume'
+
+            },
+            {
+                x: 130,
+                y: 349,
+                text: 'Indicates lower trade volume'
+
+            }
+        ]
+
+        //Lines array for reading into the "Line" below, these will point to the countries
+        var lines = [
+            {
+                x1: 140,
+                x2: 200,
+                y1: 140,
+                y2: 130
+            },
+            {
+                x1: 450,
+                x2: 520,
+                y1: 60,
+                y2: 90
+            },
+            {
+                x1: 800,
+                x2: 890,
+                y1: 170,
+                y2: 180
+            }
+        ]
+
+        //Simple text for legend labels
+        var legendLabels = [
+            {
+                text: "Indicates higher trade volume",
+                x: 300,
+                y: 300
+            }, 
+            {
+                text: "Indicates lower trade volume",
+                x: 100,
+                y: 100
+            }
+            
+        ]
+
+
+        d3.csv("Global_Imp_Exp_Volumes.csv", function (data) {
+
+            //Set input domain for color scale
+            color.domain([
+                d3.min(data, function (d) { return d.value; }),
+                d3.max(data, function (d) { return d.value; })
+            ]);
+
+            //Load in GeoJSON data
+            d3.json("world_countries.json", function (json) {
+
+                //Merge the Trade data and GeoJSON data
+                for (var i = 0; i < data.length; i++) {
+
+                    //Get each country name
+                    var dataCountry = data[i].country;
+
+                    //Convert text variable to float variable for quantitative comparisons
+                    var dataValue = parseFloat(data[i].value);
+
+                    //Find corresponding country inside the GeoJSON
+                    for (var j = 0; j < json.features.length; j++) {
+
+                        var jsonCountry = json.features[j].properties.name;
+                        if (dataCountry == jsonCountry) {
+
+                            //Copy the data value into the JSON to match up the country
+                            json.features[j].properties.value = dataValue;
+
+                            //Stop looking through the JSON
+                            break;
+
+                        }
+                    }
+                }
+
+                //Create one path per GeoJSON feature
+                svg.selectAll("path")
+                    .data(json.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .style("fill", function (d) {
+
+                        var value = d.properties.value;
+
+                        if (value) {
+                            return color(value);
+                        } else {
+                            //Make it gray if undefined
+                            return "#ccc";
+                        }
+                    });
+
+
+
+                //This group adds the labels
+                svg.selectAll("text")
+                    .data(labels)
+                    .enter()
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("x", function (d) { return d.x;})
+                    .attr("y", function (d) { return d.y;})
+                    .text(function (d) {
+                        return d.text;
+                    });
+
+                //Create color legend based on the color scheme above
+                var legend = svg.selectAll('rect')
+                    .data(color.range().reverse())
+                    .enter()
+                    .append('rect')
+                    .attr("x", 20)
+                    .attr("y", function (d, i) {
+                        return i*10+300;
+                    })
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .style("fill", function (d, i) {         
+                        return d;
+                    });
+
+                //This group adds the legend labels
+                svg.selectAll("text")
+                    .data(legendLabels)
+                    .enter()
+                    .append("text")
+                    .attr("class", "legendLabel")
+                    .attr("x", function (d) { return d.x; })
+                    .attr("y", function (d) { return d.y; })
+                    .text(function (d) {
+                        return d.text;
+                    });
+
+                //Create the lines that point from the annotations to the countries
+                svg.selectAll("line")
+                    .data(lines)
+                    .enter()
+                    .append("line")
+                    .attr("x1", function (d) {
+                        return d.x1;
+                    })
+                    .attr("x2", function (d) {
+                        return d.x2;
+                    })
+                    .attr("y1", function (d) {
+                        return d.y1;
+                    })
+                    .attr("y2", function (d) {
+                        return d.y2;
+                    })
+                    .attr("stroke-width", 2)
+                    .attr("stroke", "black");
+
+           
+                  
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>
