@@ -12,7 +12,11 @@ As discussed, the scenes utilize several methods. First, the majority of the sto
 Annotations are used quite extensively in the map tabs.  Each annotation draws the reader's view to the countries being discussed as well as the values which correspond to that country. The final slide labels the tabs to show the amount in billions of the top traded items.
 
 ## Parameters
-The Visualization uses several parameters.  A simple Forward button drives the user to complete the visualization.  The final slide uses a dropdown to change the country to observe the exports of the given country of choice by the user.
+The Visualization uses several parameters.  The colors of the charts are drawn from a JSON file that uses a range to color the graph.  Dark green in the Volume slides means heavier volume, line green lighters.  In the Net Export slide, countries that do more exporting are dark green, countries like US are net importers. A simple Forward button drives the user to complete the visualization.  The final slide uses a dropdown to change the country to observe the exports of the given country of choice by the user.  The changing parameters here are the dollars in billions of the top 5 exported products.  Changing the country changes the parameter.
+
+## Triggers
+At any point, the user can trigger forward and backward through the slides.  They can also be bounced to the About piece at the start of the project (this page).  On the final slide, the user can change the country name in order to trigger a change in the bar charts.  This is told to the user at the top of the page and the typical dropdown bar urges the user to update and make changes.
+
 
 ## Future work
 In future versions I'd like to:
