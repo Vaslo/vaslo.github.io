@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Helvetica;
+        }
+
+        .chart div {
+            font: 10px sans-serif;
+            background-color: steelblue;
+            text-align: right;
+            padding: 3px;
+            margin: 1px;
+            color: white;
+        }
+
+        .chart rect {
+            fill: lightseagreen;
+        }
+
+            .chart rect:hover {
+                fill: gray;
+            }
+    </style>
+</head>
+<body>
+    <form id="form1">
+        <select id="thedropdown">
+            <option value="china">China</option>
+            <option value="USA">USA</option>
+            <option value="Germany">Germany</option>
+            <option value="USA">USA</option>
+        </select>
+    </form>
+
+    <div class="chart"></div>
+
+    <script>
+
+//different datasets to plot
+data14 = [4, 8, 15, 16, 23, 42];
+data15 = [7,9,22,6,14,35];
+
+var height = 500,
+    width = 800,
+    barWidth = 100,
+    barOffset = 110;
+    barHeight = 10;
+
+//set up svg
+var canvas = d3.select(".chart")
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .style("background-color", "beige");
+
+var tooltip = d3.select('body').append('div')
+        .style('position', 'absolute')
+        .style('color', "white")
+        .style('font-weight', "bold");
+
+
+function draw(mydata) {
+  //bind data to rects
+  var sel = canvas.selectAll('rect')
+  .data(mydata);
+
+ // add elements
+    sel.enter().append("rect");
+
+
+//remove old elements
+ sel.exit().remove();
+}
+
+// d3 for selection of dropdown
+d3.select('#thedropdown')
+  .on('change', function() {
+    var newData = eval(d3.select(this).property('value'));
+    draw(newData);
+});
+
+//creates initial state on load
+draw(data14);
+
+
+    </script>
+</body>
+</html>
+

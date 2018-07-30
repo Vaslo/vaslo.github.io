@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>D3: Global Net Imports/Exports of the largest 3 traders</title>
+    <title>D3: Global Net Imports/Exports of the next 7 largest traders</title>
     <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 
     <style type="text/css">
@@ -87,7 +87,7 @@
 <body>
 
     <div id="container">
-        <h1>In 2016, only three countries made up nearly 25% of the global volume of imports and exports</h1>
+        <h1>The next 25% are made up of 7 more countries...</h1>
 
 
         <div id="chart">
@@ -97,13 +97,13 @@
 
         <div id="buttons">
 
-            <a href="https://github.com/Vaslo/vaslo.github.io" class="link-back-btn">About</a>
-            <a href="Next_7.html" class="link-fwd-btn">The next tier of trading partners make up...</a>
+            <a href="opening.html" class="link-back-btn">Go Back to see the big 3 Trading Countries</a>
+            <a href="Top10_countries.html" class="link-fwd-btn">This means that...</a>
 
         </div>
 
-   
-        <p>Despite many global trading partners, it's clear that the US, China, and (suprisingly) Germany drive a quarter of the volume of global trade.</p>
+
+        <p>There is a lot of room for the 4-5% volume traders after the big 3</p>
         <div id="footer">
             <p>Data available at:<a href="https://comtrade.un.org/data/">the UN Comtrade Website.</a>  Missing or negligible data is colored gray.
         </div>
@@ -111,7 +111,7 @@
 
     <script type="text/javascript">
 
-     
+
 
         //Width and height
         var w = 1000;
@@ -142,19 +142,43 @@
         //Labels array for reading into the "Text" labels below
         var labels = [
             {
-                x: 100,
-                y: 150,
-                text: 'US: 10.7%'
+                x: 900,
+                y: 100,
+                text: 'Japan: 4.1%'
             },
             {
-                x: 450,
-                y: 50,
-                text: 'Germany: 8.4%'
+                x: 500,
+                y: 20,
+                text: 'France: 3.9%'
+            },
+            {
+                x: 430,
+                y: 100,
+                text: 'Belgium: 3.7%'
+
             },
             {
                 x: 900,
+                y: 220,
+                text: 'Hong Kong: 3.6%'
+
+            },
+            {
+                x: 100,
+                y: 90,
+                text: 'Canada: 3.5%'
+
+            },
+            {
+                x: 430,
+                y: 80,
+                text: 'UK: 3.0%'
+
+            },
+            {
+                x: 500,
                 y: 200,
-                text: 'China: 13.4%'
+                text: 'Italy: 2.9%'
 
             },
             {
@@ -174,22 +198,46 @@
         //Lines array for reading into the "Line" below, these will point to the countries
         var lines = [
             {
-                x1: 140,
-                x2: 200,
-                y1: 140,
-                y2: 130
+                x1: 880,
+                x2: 900,
+                y1: 130,
+                y2: 100
             },
             {
-                x1: 450,
-                x2: 520,
-                y1: 60,
+                x1: 500,
+                x2: 500,
+                y1: 25,
+                y2: 100
+            },
+            {
+                x1: 480,
+                x2: 500,
+                y1: 100,
+                y2: 105
+            },
+            {
+                x1: 465,
+                x2: 490,
+                y1: 80,
                 y2: 90
             },
             {
+                x1: 530,
+                x2: 490,
+                y1: 120,
+                y2: 190
+            },
+            {
                 x1: 800,
-                x2: 890,
-                y1: 170,
-                y2: 180
+                x2: 900,
+                y1: 190,
+                y2: 200
+            },
+            {
+                x1: 100,
+                x2: 150,
+                y1: 80,
+                y2: 50
             }
         ]
 
@@ -199,13 +247,13 @@
                 text: "Indicates higher trade volume",
                 x: 300,
                 y: 300
-            }, 
+            },
             {
                 text: "Indicates lower trade volume",
                 x: 100,
                 y: 100
             }
-            
+
         ]
 
 
@@ -271,8 +319,8 @@
                     .enter()
                     .append("text")
                     .attr("class", "label")
-                    .attr("x", function (d) { return d.x;})
-                    .attr("y", function (d) { return d.y;})
+                    .attr("x", function (d) { return d.x; })
+                    .attr("y", function (d) { return d.y; })
                     .text(function (d) {
                         return d.text;
                     });
@@ -284,11 +332,11 @@
                     .append('rect')
                     .attr("x", 20)
                     .attr("y", function (d, i) {
-                        return i*10+300;
+                        return i * 10 + 300;
                     })
                     .attr("width", 10)
                     .attr("height", 10)
-                    .style("fill", function (d, i) {         
+                    .style("fill", function (d, i) {
                         return d;
                     });
 
@@ -324,8 +372,8 @@
                     .attr("stroke-width", 2)
                     .attr("stroke", "black");
 
-           
-                  
+
+
             });
 
         });

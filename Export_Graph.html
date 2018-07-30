@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>D3: Export Choices</title>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style type="text/css">
+        .label {
+            font-weight: bold;
+            text-anchor: middle;
+            cursor: default;
+        }
+
+        .legendlabel {
+            font-weight: bold;
+            text-anchor: middle;
+            cursor: default;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+
+        #container {
+            width: 1000px;
+            margin: 25px auto 25px auto;
+            padding: 50px 50px 50px 50px;
+            background-color: lightgray;
+            box-shadow: 0 0 20px #ccc;
+        }
+
+        #footer p {
+            margin-top: 50px;
+            margin-bottom: 0;
+            font-size: 11px;
+            line-height: 14px;
+            color: black;
+        }
+
+        .link-back-btn {
+            color: white;
+            background: #7fcad0;
+            padding: 10px 20px;
+            margin: 10px 0px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            height: 20px;
+            width: 450px;
+            float: left;
+        }
+
+            .link-back-btn:hover {
+                background: #6ab8be;
+            }
+
+        .link-fwd-btn {
+            color: white;
+            background: #7fcad0;
+            padding: 10px 20px;
+            margin: 10px 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            width: 450px;
+            height: 20px;
+            float: right;
+        }
+
+            .link-fwd-btn:hover {
+                background: #6ab8be;
+            }
+
+        .chart div{
+            font: 10px sans-serif;
+            background-color: darkgreen;
+            text-align: right;
+            padding: 3px;
+            margin: 1px;
+            color: white;
+            transition: width 1s ease-in;
+        }
+
+            .chart div:hover {
+                background-color: gray;
+            }
+    </style>
+
+</head>
+<body>
+
+    <div id="container">
+        <h1>Please select a country below to see the top 5 exports</h1>
+        <form id="form1">
+            <select id="dropdown">
+                <option value="china">China</option>
+                <option value="usa">USA</option>
+                <option value="germany">Germany</option>
+                <option value="japan">Japan</option>
+                <option value="france">France</option>
+                <option value="belgium">Belgium</option>
+                <option value="hk">Hong Kong</option>
+                <option value="canada">Canada</option>
+                <option value="uk">England</option>
+                <option value="italy">Italy</option>
+            </select>
+        </form>
+
+        <div class="chart">
+            <h2>Top 5 Exports (in $B)</h2>
+        </div>
+
+
+        <div id="buttons">
+
+            <a href="Net_Exports_Map.html" class="link-back-btn">Go Back to see the net exports by high vol country</a>
+            <a href="opening.html" class="link-fwd-btn">Thanks for viewing!  Please click here to start over</a>
+
+        </div>
+
+
+        <p>Countries like the US export many small amounts of items like Food, Planes, etc.  Others like China have fewer large exports (Toys, shoes, etc.) </p>
+        <div id="footer">
+            <p>Data available at:<a href="https://comtrade.un.org/data/">the UN Comtrade Website.</a>  Any items listed as "non-identifiable" have been removed.
+        </div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+        var height = 500,
+            width = 800,
+            barWidth = 100,
+            barOffset = 110;
+            barHeight = 10;
+
+        var tooltip = d3.select('body').append('div')
+            .style('position', 'absolute')
+            .style('color', "white")
+            .style('font-weight', "bold");
+
+        function createChart() {
+            var sel = d3.select(".chart")
+                .selectAll("div")
+                .data(mydata);
+                
+
+            // add elements   
+            sel.enter().append("div");
+
+
+            //update elements  
+            sel.style("width", function (d) { return (d[0]) * 25 + "px"; })
+                .text(function (d) { return d[0]; });
+
+            //remove old elements
+            sel.exit().remove();
+
+
+        }
+        mydata = [0, 0, 0, 0, 0];
+        createChart();
+
+        document.getElementById("form1").onchange = function () {
+            country = document.getElementById("dropdown").value;
+
+            if (country == "china") {
+                mydata =
+                    [
+                        [18, 'Toys nes'],
+                        [17, 'Footwear, outer soles/uppers of rubber or plastic, ne'],
+                        [16, 'Electric lamps, lighting fittings, nes'],
+                        [12, 'Cargo vessels other than tanker or refrigerated'],
+                        [12, 'Jewellery and parts of precious metal except silver']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "germany") {
+                mydata =
+                    [
+                        [37, 'Medicaments nes, in dosage'],
+                        [33, 'Fixed wing aircraft, unladen weight > 15,000 kg'],
+                        [21, 'Antisera and other blood fractions'],
+                        [10, 'Oils petroleum, bituminous, distillates, except crude'],
+                        [8, 'Aircraft parts nes']
+                    ];
+
+                    
+                createChart();
+            }
+
+            if (country == "usa") {
+                mydata =
+                    [
+                        [10, 'Maize except seed corn'],
+                        [8, 'Paintings/drawings/pastels executed by hand'],
+                        [5, 'Aircraft parts nes'],
+                        [5, 'Wheat except durum wheat, and meslin'],
+                        [5, 'Food preparations nes']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "japan") {
+                mydata =
+                    [
+                        [8, 'Cargo vessels other than tanker or refrigerated'],
+                        [7, 'Oils petroleum, bituminous, distillates, except crude'],
+                        [6, 'Gold in unwrought forms non-monetary'],
+                        [4, 'Aircraft parts nes'],
+                        [3, 'Tankers']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "france") {
+                mydata =
+                    [
+                        [15, 'Medicaments nes, in dosage'],
+                        [11, 'Commodities not specified according to kind'],
+                        [7, 'Oils petroleum, bituminous, distillates, except crude'],
+                        [5, 'Beauty, makeup and suntan preparations nes'],
+                        [5, 'Grape wines nes, fortified wine or must, pack < 2l']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "belgium") {
+                mydata =
+                    [
+                        [20, 'Oils petroleum, bituminous, distillates, except crude'],
+                        [11, 'Automobiles, diesel engine of 1500-2500 cc'],
+                        [11, 'Diamonds (jewellery) unworked or simply sawn, cleaved'],
+                        [10, 'Commodities not specified according to kind'],
+                        [7, 'Automobiles, spark ignition engine of 1500-3000 cc']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "hk") {
+                mydata =
+                    [
+                        [13, 'Diamonds (jewellery) worked but not mounted or set'],
+                        [5, 'Jewellery and parts of precious metal except silver'],
+                        [3, 'Wrist-watch, base-metal case, battery, with hands'],
+                        [3, 'Toys nes'],
+                        [2, 'Rubies, sapphires and emeralds worked but not set']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "canada") {
+                mydata =
+                    [
+                        [23, 'Automobiles, spark ignition engine of >3000 cc'],
+                        [22, 'Automobiles, spark ignition engine of 1500-3000 cc'],
+                        [20, 'Commodities not specified according to kind'],
+                        [12, 'Gold in unwrought forms non-monetary'],
+                        [8, 'Oils petroleum, bituminous, distillates, except crude']
+                    ];
+
+
+                createChart();
+            }
+
+            if (country == "uk") {
+                mydata =
+                [
+                    [12, 'Commodities not specified according to kind'],
+                    [4, 'Paintings/drawings/pastels executed by hand'],
+                    [3, 'Fixed wing aircraft, unladen weight > 15,000 kg'],
+                    [1, 'Fixed wing aircraft, unladen weight 2,000-15,000 kg'],
+                    [1, 'Original sculptures and statuary, in any material']
+                ];
+
+
+                createChart();
+            }
+
+            if (country == "italy") {
+                mydata =
+                    [
+                        [10, 'Oils petroleum, bituminous, distillates, except crude'],
+                        [9, 'Commodities not specified according to kind'],
+                        [5, 'Jewellery and parts of precious metal except silver'],
+                        [4, 'Grape wines nes, fortified wine or must, pack < 2l'],
+                        [3, 'Handbags with outer surface of leather']
+                    ];
+
+
+                createChart();
+            }
+        }
+
+
+        
+
+
+    </script>
+</body>
+</html>
