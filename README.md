@@ -1,4 +1,7 @@
 # CS498 - Final Project Writeup
+
+### At any time you can return to the visualization here:  (https://vaslo.github.io/opening.html)
+
 ## Purpose of Visualization
 This visualization project is meant to show the viewer information about Imports/Exports of major trading countries around the globe.  The visualization begins with a view of the world with highlights on the trade volume (total imports + exports) in 2016.  Gradually is pulled through a narrative where they are shown how few countries control the volume of trade.  They are next shown Net exports, and see that some heavy trade companies are Trade Surplus or Deficit.  At the end, they are able to pull down bars to see the top 5 items that each country exports
 
