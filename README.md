@@ -29,7 +29,7 @@ In future versions I'd like to:
 * Better transitions between the global slides showing the change more seamless.
 
 ### Citations
-Murray, S. (2017). Interactive data visualization for the web an introduction to designing with D3. Beijing: OReilly. 
-Meeks, E. (2018). D3.js in action data visualization with JavaScript. Shelter Island, NY: Manning. 
-Mike Bostock's Block Page: https://bl.ocks.org/mbostock
-Classroom Examples, Summer 2018, CS 498 Data Visualization
+* Murray, S. (2017). Interactive data visualization for the web an introduction to designing with D3. Beijing: OReilly. 
+* Meeks, E. (2018). D3.js in action data visualization with JavaScript. Shelter Island, NY: Manning. 
+* Mike Bostock's Block Page: https://bl.ocks.org/mbostock
+* Classroom Examples, Summer 2018, CS 498 Data Visualization
